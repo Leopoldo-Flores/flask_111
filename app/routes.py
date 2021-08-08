@@ -1,10 +1,12 @@
 from flask import Flask, request
-from app.database import (
-    scan, insert, 
-    deactivate_user, select
-)
+from flask_sqlalchemy import SQLAlchemy
+
 
 app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite://mydb.db"
+db = SQLAlchemy(app)
+
+from app.database import User
 
 
 @app.route("/users")
@@ -13,7 +15,7 @@ def get_all_users():
         "ok": True,
         "message": "Success"
     }
-    out["body"] = scan()
+    out["users"] = User.query.all()
     return out
 
 
@@ -24,11 +26,7 @@ def create_user():
         "message": "Success"
     }
     user_data = request.json
-    out["new_id"] = insert(
-        user_data.get("first_name"),
-        user_data.get("last_name"),
-        user_data.get("hobbies")
-    )
+    
     return out, 201
 
 
