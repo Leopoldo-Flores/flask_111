@@ -7,17 +7,17 @@ TEST_USER = {
     "active": 1
 }
 
-url = "http://127.0.0.1:5000/users"
+URL = "http://127.0.0.1:5000/users"
 
 def test_user_creation():
-    out = requests.post(url, json=TEST_USER)
+    out = requests.post(URL, json=TEST_USER)
     if out.status_code == 201:
         print(out.json())
     else:
         print("Something went wrong.")
 
-    
-def test_user_dectivate():
+
+def test_user_deactivate():
     out = requests.delete("%s/2" % URL)
     if out.status_code == 200:
         print(out.json())
